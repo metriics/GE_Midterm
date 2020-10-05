@@ -1,0 +1,10 @@
+﻿  GameObject.cpp
+  Main.cpp
+  Wrapper.cpp
+     Creating library C:\Users\steph\source\repos\Lec4Inclass\x64\Release\Lec4Inclass.lib and object C:\Users\steph\source\repos\Lec4Inclass\x64\Release\Lec4Inclass.exp
+  Generating code
+  10 of 12 functions (83.3%) were compiled, the rest were copied from previous compilation.
+    2 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Lec4Inclass.vcxproj -> C:\Users\steph\source\repos\Lec4Inclass\x64\Release\Lec4Inclass.dll
