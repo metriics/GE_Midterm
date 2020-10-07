@@ -139,11 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CheckpointTimeLogger.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Wrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CheckpointTimeLogger.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="PluginSettings.h" />
     <ClInclude Include="Vector2D.h" />

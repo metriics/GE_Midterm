@@ -1,10 +1,15 @@
-﻿  GameObject.cpp
+﻿  CheckpointTimeLogger.cpp
+C:\Users\steph\source\repos\GE_Midterm\Native C++\Lec4Inclass\CheckpointTimeLogger.h(15,27): warning C4251: 'CheckpointTimeLogger::m_RTBC': class 'std::vector<float,std::allocator<float>>' needs to have dll-interface to be used by clients of class 'CheckpointTimeLogger'
+C:\Users\steph\source\repos\GE_Midterm\Native C++\Lec4Inclass\CheckpointTimeLogger.h(15): message : see declaration of 'std::vector<float,std::allocator<float>>'
+C:\Users\steph\source\repos\GE_Midterm\Native C++\Lec4Inclass\CheckpointTimeLogger.cpp(22,25): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  GameObject.cpp
   Main.cpp
   Wrapper.cpp
-     Creating library C:\Users\steph\source\repos\Lec4Inclass\x64\Release\Lec4Inclass.lib and object C:\Users\steph\source\repos\Lec4Inclass\x64\Release\Lec4Inclass.exp
+C:\Users\steph\source\repos\GE_Midterm\Native C++\Lec4Inclass\CheckpointTimeLogger.h(15,27): warning C4251: 'CheckpointTimeLogger::m_RTBC': class 'std::vector<float,std::allocator<float>>' needs to have dll-interface to be used by clients of class 'CheckpointTimeLogger'
+C:\Users\steph\source\repos\GE_Midterm\Native C++\Lec4Inclass\CheckpointTimeLogger.h(15): message : see declaration of 'std::vector<float,std::allocator<float>>'
+     Creating library C:\Users\steph\source\repos\GE_Midterm\Native C++\Lec4Inclass\x64\Release\Lec4Inclass.lib and object C:\Users\steph\source\repos\GE_Midterm\Native C++\Lec4Inclass\x64\Release\Lec4Inclass.exp
   Generating code
-  10 of 12 functions (83.3%) were compiled, the rest were copied from previous compilation.
-    2 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB not found, fall back to full compilation.
+  All 119 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
-  Lec4Inclass.vcxproj -> C:\Users\steph\source\repos\Lec4Inclass\x64\Release\Lec4Inclass.dll
+  Lec4Inclass.vcxproj -> C:\Users\steph\source\repos\GE_Midterm\Native C++\Lec4Inclass\x64\Release\Lec4Inclass.dll

@@ -1,56 +1,88 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PluginTester : MonoBehaviour
 {
-    public GameObject cube;
+    const string DLL_NAME = "Lec4Inclass";
 
-    private const string DLL_NAME = "Lec4Inclass";
+    // methods
+    [DllImport(DLL_NAME)]
+    private static extern void ResetLogger();
 
-    [StructLayout(LayoutKind.Sequential)]
-    struct Vector2D
+    // setters
+    [DllImport(DLL_NAME)]
+    private static extern void SaveCheckpointTime(float RTBC);
+
+    // getters
+    [DllImport(DLL_NAME)]
+    private static extern float GetTotalTime();
+    [DllImport(DLL_NAME)]
+    private static extern float GetCheckpointTime(int index);
+    [DllImport(DLL_NAME)]
+    private static extern int GetNumCheckpoints();
+
+    float lastTime = 0.0f;
+
+    public void SaveTime(float checkpointTime)
     {
-        public float x;
-        public float y;
+        SaveCheckpointTime(checkpointTime);
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    struct Vector3D
+    public float LoadTime(int index)
     {
-        public float x;
-        public float y;
-        public float z;
+        if (index >= GetNumCheckpoints())
+        {
+            return -1.0f; // we know this is impossible, it signals out of bounds
+        }
+        return GetCheckpointTime(index);
     }
 
-    [DllImport(DLL_NAME)]
-    private static extern int GetID();
+    public float LoadTotalTime()
+    {
+        return GetTotalTime();
+    }
 
-    [DllImport(DLL_NAME)]
-    private static extern void SetID(int id);
+    public void LoadResetLogger()
+    {
+        ResetLogger();
+    }
 
-    [DllImport(DLL_NAME)]
-    private static extern Vector3D GetPosition();
-
-    [DllImport(DLL_NAME)]
-    private static extern void SetPosition(float x, float y, float z);
-
+    void Start()
+    {
+        lastTime = Time.time;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            SetID(420);
-            Debug.Log(GetID());
+            float currentTime = Time.time;
+            float checkpointTime = currentTime - lastTime;
+            lastTime = currentTime;
 
-            SetPosition(3.4f, 5.7f, 8.9f);
-            Debug.Log(GetPosition().x);
-            Debug.Log(GetPosition().y);
-            Debug.Log(GetPosition().z);
-
-            cube.transform.position = new Vector3(GetPosition().x, GetPosition().y, GetPosition().z);
+            SaveTime(checkpointTime);
         }
+
+        for (int i = 0; i < 10; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0+i))
+            {
+                Debug.Log(LoadTime(i));
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log(LoadTotalTime());
+        }
+    }
+
+    void OnDestroy()
+    {
+        ResetLogger();
     }
 }

@@ -1,20 +1,23 @@
 #include "Wrapper.h"
-#include "GameObject.h"
 
-GameObject gameObject;
+CheckpointTimeLogger timeLogger;
 
-PLUGIN_API int GetID() {
-	return gameObject.GetID();
+PLUGIN_API void ResetLogger() {
+	return timeLogger.ResetLogger();
 }
 
-PLUGIN_API void SetID(const int id) {
-	gameObject.SetID(id);
+PLUGIN_API void SaveCheckpointTime(float RTBC) {
+	return timeLogger.SaveCheckpointTime(RTBC);
 }
 
-PLUGIN_API Vector3D GetPosition() {
-	return gameObject.GetPosition();
+PLUGIN_API float GetTotalTime() {
+	return timeLogger.GetTotalTime();
 }
 
-PLUGIN_API void SetPosition(const float x, const float y, const float z) {
-	gameObject.SetPosition(x, y, z);
+PLUGIN_API float GetCheckpointTime(int index) {
+	return timeLogger.GetCheckpointTime(index);
+}
+
+PLUGIN_API int GetNumCheckpoints() {
+	return timeLogger.GetNumCheckpoints();
 }

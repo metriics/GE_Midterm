@@ -6,13 +6,9 @@ public class Movement : MonoBehaviour
 {
     float mouseX;
     float mouseY;
-    float posX;
-    float posZ;
-    float posY;
     public float mouseSensitivity = 500;
     public float speed = 15.0f;
-    Collider playerCollider;
-    public Collider checkpoint1Collider;
+    public GameObject mazeManager;
 
     bool cursorVisible = false;
     float xRotation = 0f;
@@ -22,7 +18,6 @@ public class Movement : MonoBehaviour
     void Start()
     {
         hideCursor();
-        playerCollider = this.GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -53,9 +48,11 @@ public class Movement : MonoBehaviour
             xRotation = Mathf.Clamp(xRotation, -90.0f, 90.0f);
 
             transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0.0f);
+        }
 
-            // trigger collisions
-            
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.position += new Vector3(transform.forward.x * speed * Time.deltaTime, 0.0f, transform.forward.z * speed * Time.deltaTime);
         }
     }
 
@@ -69,5 +66,10 @@ public class Movement : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         cursorVisible = true;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        mazeManager.GetComponent<MazeLogic>().checkpointCallback(other.gameObject);
     }
 }
