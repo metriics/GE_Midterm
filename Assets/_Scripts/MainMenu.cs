@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         // we can use this later to load in stats from previous sessions
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void scenePlay()

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
 
 public class MazeLogic : MonoBehaviour
 {
+    const string DLL_NAME = "Lec4Inclass";
+
     // references
     [SerializeField]
     public Text remainingTimeText;
@@ -15,12 +18,33 @@ public class MazeLogic : MonoBehaviour
     GameObject currentCheckpoint;
     public Material green;
     public GameObject player;
-    
+    public GameObject platform1;
+    public GameObject platform2;
+    public GameObject wall;
+
+    [DllImport(DLL_NAME)]
+    private static extern void ResetLogger();
+
+    // setters
+    [DllImport(DLL_NAME)]
+    private static extern void SaveCheckpointTime(float RTBC);
+
+    // getters
+    [DllImport(DLL_NAME)]
+    private static extern float GetTotalTime();
+    [DllImport(DLL_NAME)]
+    private static extern float GetCheckpointTime(int index);
+    [DllImport(DLL_NAME)]
+    private static extern int GetNumCheckpoints();
+
+    float lastTime = 0.0f;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        secondsRemaining = 60.0f;
+        secondsRemaining = 30.0f;
+        lastTime = Time.time;
 
         // get all children of checkpointParent and store them in checkpoints list
         foreach (Transform child in checkpointParent.transform)
@@ -41,16 +65,18 @@ public class MazeLogic : MonoBehaviour
         }
         else
         {
-            // save score here, kick to stats menu
-            SceneManager.LoadScene("End Scene");
+            EndGame();
         }
 
         // round seconds from float to int, convert to string
         remainingTimeText.text = "Find a checkpoint in less than " + Mathf.RoundToInt(secondsRemaining).ToString() + " seconds.";
 
+        platform1.GetComponent<PlatformMovement>().UpdateObstacle();
+        platform2.GetComponent<PlatformMovement>().UpdateObstacle();
+        wall.GetComponent<PlatformMovement>().UpdateObstacle();
 
-        // REMOVE LATER
-        if (Input.GetKeyDown(KeyCode.R))
+        // check if player fell
+        if (player.transform.position.y <= -20.0f)
         {
             Death();
         }
@@ -74,7 +100,14 @@ public class MazeLogic : MonoBehaviour
         checkpoint.GetComponent<MeshRenderer>().material.name = green.name;
 
         // reset countdown
-        secondsRemaining = 60.0f;
+        secondsRemaining = 30.0f;
+        SaveCheckpointTime(lastTime - Time.time);
+        lastTime = Time.time;
+
+        if (checkpoint.name == "Finish")
+        {
+            EndGame();
+        }
     }
 
     // respawn the player at previous checkpoint, or at their spawn
@@ -96,5 +129,33 @@ public class MazeLogic : MonoBehaviour
         Debug.Log("respawn at checkpoint");
 
         player.GetComponent<CharacterController>().enabled = true;
+    }
+
+    private void OnDestroy()
+    {
+        ResetLogger();
+    }
+
+    private void EndGame()
+    {
+        // save score here, kick to stats menu
+        PlayerPrefs.SetFloat("TRT", -GetTotalTime());
+        PlayerPrefs.SetInt("NumCheckpoints", GetNumCheckpoints());
+        for (int i = 0; i < GetNumCheckpoints(); i++)
+        {
+            string name = "RTBC" + i.ToString();
+            PlayerPrefs.SetFloat(name, -GetCheckpointTime(i));
+        }
+
+        if (GetNumCheckpoints() == checkpoints.Count)
+        {
+            PlayerPrefs.SetString("win", "Success!");
+        }
+        else
+        {
+            PlayerPrefs.SetString("win", "Failure!");
+        }
+
+        SceneManager.LoadScene("End Scene");
     }
 }
